@@ -7,6 +7,7 @@ export interface DialogInstance {
     wrapper: string;
     props: any;
     resolve: (data: any) => void;
+    reject: (err: Error) => void;
 }
 
 export const dialogRef = shallowRef<DialogInstance>();
@@ -19,7 +20,11 @@ export function closeDialog(data?: any) {
     if (data === undefined) {
         data = dialogRef.value.comp.returnValue();
     }
-    dialogRef.value.resolve(data);
+    if (data instanceof Error) {
+        dialogRef.value.reject(data);
+    } else {
+        dialogRef.value.resolve(data);
+    }
     dialogRef.value = null;
 }
 
@@ -55,12 +60,13 @@ type ReturnType<C extends DefineComponent<any, any, any, any, any>> = BindingRet
  * @return A promise that resolves when the dialog is closed
  */
 export function openDialog<C extends DefineComponent<any, any, any, any, any>>(dialog: C, props?: PropsType<C>, wrapper: string = 'default'): Promise<ReturnType<C>> {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         dialogRef.value = {
             dialog,
             props,
             wrapper,
-            resolve
+            resolve,
+            reject,
         }
     });
 }
