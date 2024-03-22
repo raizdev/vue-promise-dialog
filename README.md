@@ -1,4 +1,4 @@
-# vue3-promise-dialog
+# vue-promise-dialog
 
 Dialogs meet promises in Vue 3 !
 
