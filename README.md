@@ -13,7 +13,7 @@ let data = await openMyDialog();
 ## Installation
 
 ```
-npm i vue3-promise-dialog
+pnpm install vue-promise-dialog
 ```
 
 ## Demos
